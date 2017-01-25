@@ -89,12 +89,12 @@ func (p Plugin) ProcessRestore(c cache.Cache) error {
 		if err != nil {
 
 			// this is fallback code to restore from the projects default branch.
-			// hash = hasher(mount, "master")
-			// path = filepath.Join(p.Path, p.Repo, hash)
-			// log.Printf("restoring directory %s from remote cache, using default branch", mount)
-			// if xerr := cache.Restore(c, path, mount); xerr != nil {
-			return err
-			// }
+			hash = hasher(mount, p.Default)
+			path = filepath.Join(p.Path, p.Repo, hash)
+			log.Printf("restoring directory <%s> from remote cache, using default branch <%s>", mount, path)
+			if xerr := cache.RestoreCmd(c, path, mount); xerr != nil {
+				return err
+			}
 		}
 	}
 	return nil
